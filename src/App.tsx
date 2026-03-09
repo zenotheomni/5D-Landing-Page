@@ -200,7 +200,7 @@ function App() {
               </div>
               <div className="imperial-overlay"></div>
               <div className="imperial-content">
-                <h3>5D IMPERIAL</h3>
+                <h3>FIFTH DIMENSION IMPERIAL</h3>
                 <p>Explore the Archive. Step into the realm.</p>
                 <span className="visit-link">Visit 5dimperial.com <ArrowRight size={16} /></span>
               </div>
