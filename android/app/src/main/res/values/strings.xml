@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">5D Landing Page</string>
+    <string name="title_activity_main">5D Landing Page</string>
+    <string name="package_name">com.fifthdimension.landing</string>
+    <string name="custom_url_scheme">com.fifthdimension.landing</string>
+</resources>
