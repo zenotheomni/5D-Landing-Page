@@ -3,6 +3,7 @@ import { ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const Entry = () => {
+  const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [consent, setConsent] = useState(false);
@@ -33,7 +34,7 @@ const Entry = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, phone }),
+        body: JSON.stringify({ name: firstName, email, phone }),
       });
 
       const data = await response.json();
@@ -85,6 +86,19 @@ const Entry = () => {
         <div className="glass-panel">
           <form onSubmit={handleSubmit}>
             <div className="form-group">
+              <label htmlFor="firstName">FIRST NAME</label>
+              <input
+                type="text"
+                id="firstName"
+                className="input-base"
+                placeholder="Enter your first name"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="form-group">
               <label htmlFor="email">EMAIL ADDRESS</label>
               <input
                 type="email"
@@ -99,7 +113,7 @@ const Entry = () => {
 
             <div className="form-group">
               <label htmlFor="phone" style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span>PHONE NUMBER <span style={{ textTransform: 'none' }}>(VIP text access)</span></span>
+                <span>PHONE NUMBER <span style={{ textTransform: 'none', color: 'var(--muted-silver)' }}>(Optional - for VIP physical drops only)</span></span>
               </label>
               <input
                 type="tel"
