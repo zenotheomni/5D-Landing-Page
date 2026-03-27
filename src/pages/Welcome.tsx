@@ -28,7 +28,7 @@ const Welcome = () => {
         <p style={{ textAlign: 'center', color: 'var(--muted-silver)', marginBottom: '2rem' }}>Feel it first. Understand it later.</p>
         <div
           className="youtube-wrapper"
-          style={{ height: 'clamp(300px, 45vw, 520px)', cursor: 'default' }}
+          style={{ width: '100%', maxWidth: '800px', margin: '0 auto', cursor: 'default' }}
         >
           <iframe
             width="100%"
