@@ -686,6 +686,8 @@ h6 {
 .code-list {
   list-style: none;
   font-family: 'Oswald', sans-serif;
+  max-width: max-content;
+  margin: 0 auto;
 }
 
 .code-list li {
