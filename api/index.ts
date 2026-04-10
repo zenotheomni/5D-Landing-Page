@@ -33,19 +33,28 @@ app.get('/health', (req, res) => {
 });
 
 app.post('/api/join', async (req, res) => {
-    const { email, phone } = req.body;
+    const { name, email, phone } = req.body;
 
-    if (!email && !phone) {
+    const normalizedName = typeof name === 'string' ? name.trim() : '';
+    const normalizedEmail = typeof email === 'string' ? email.trim().toLowerCase() : '';
+    const normalizedPhone = typeof phone === 'string' ? phone.trim() : '';
+
+    if (!normalizedEmail && !normalizedPhone) {
         return res.status(400).json({ error: 'Email or phone number is required.' });
     }
 
     try {
         // 1. Save to Supabase (Optional: if they have a 'waitlist' table)
         if (supabaseUrl && supabaseKey) {
-            const { data, error } = await supabase
+            const payload = {
+                name: normalizedName || null,
+                email: normalizedEmail || null,
+                phone: normalizedPhone || null,
+            };
+
+            const { error } = await supabase
                 .from('waitlist')
-                .insert([{ email, phone }])
-                .select();
+                .insert([payload]);
 
             if (error) {
                 console.error('Supabase Error:', error);
@@ -54,11 +63,15 @@ app.post('/api/join', async (req, res) => {
         }
 
         // 2. Add to Mailchimp Audience (If email is provided and Mailchimp configured)
-        if (email && process.env.MAILCHIMP_API_KEY && process.env.MAILCHIMP_AUDIENCE_ID) {
+        if (normalizedEmail && process.env.MAILCHIMP_API_KEY && process.env.MAILCHIMP_AUDIENCE_ID) {
             try {
                 await mailchimp.lists.addListMember(process.env.MAILCHIMP_AUDIENCE_ID, {
-                    email_address: email,
+                    email_address: normalizedEmail,
                     status: 'subscribed',
+                    merge_fields: {
+                        FNAME: normalizedName || undefined,
+                        PHONE: normalizedPhone || undefined,
+                    },
                 });
             } catch (mcError: any) {
                 console.error('Mailchimp Error:', mcError.response?.body || mcError);
