@@ -34,7 +34,14 @@ const Entry = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name: firstName, email, phone }),
+        body: JSON.stringify({
+          name: firstName,
+          email,
+          phone,
+          consent,
+          source: 'landing-page',
+          interestArea: 'world',
+        }),
       });
 
       const data = await response.json();
