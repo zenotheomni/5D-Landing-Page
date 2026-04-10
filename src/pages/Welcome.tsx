@@ -6,7 +6,7 @@ const Welcome = () => {
       <div className="intro-header">
         <h1 className="success-headline" style={{ fontSize: 'clamp(2.5rem, 5vw, 4.5rem)', color: 'var(--bone-white)' }}>WELCOME TO THE FIFTH</h1>
         <p className="success-subtitle" style={{ fontSize: '1.25rem', marginBottom: '1rem', color: 'var(--muted-silver)' }}>You found this for a reason.</p>
-        <p className="success-message" style={{ fontSize: '1.1rem', margin: '0 auto', maxWidth: '400px', lineHeight: '1.6' }}>This is The Foundation.<br />Most people won’t understand this yet.</p>
+        <p className="success-message" style={{ fontSize: '1.1rem', margin: '0 auto', maxWidth: '460px', lineHeight: '1.6' }}>You are in the system now. Start with the world, then move into the store, the signal, and the culture behind it.</p>
       </div>
 
       <section className="intro-section code-section delay-1">
@@ -43,8 +43,14 @@ const Welcome = () => {
       </section>
 
       <section className="intro-section links-grid delay-3">
-        <h2 style={{ fontSize: '2rem', marginBottom: '0.5rem', textAlign: 'center' }}>ENTER THE WORLD</h2>
-        <p style={{ textAlign: 'center', color: 'var(--muted-silver)', marginBottom: '2.5rem' }}>Explore the archive. Step into the Fifth.</p>
+        <h2 style={{ fontSize: '2rem', marginBottom: '0.5rem', textAlign: 'center' }}>YOUR NEXT MOVE</h2>
+        <p style={{ textAlign: 'center', color: 'var(--muted-silver)', marginBottom: '1.25rem' }}>Start with the strongest path, then explore deeper.</p>
+
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>
+          <a href="https://fifth-dimension-universe.vercel.app" target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ width: '100%', maxWidth: '420px', textDecoration: 'none' }}>
+            ENTER THE WORLD <ArrowRight size={20} />
+          </a>
+        </div>
 
         <a href="https://5dimperial.com" target="_blank" rel="noopener noreferrer" className="imperial-preview">
           <div className="imperial-marquee">
@@ -77,8 +83,8 @@ const Welcome = () => {
           </div>
           <div className="imperial-overlay"></div>
           <div className="imperial-content">
-            <h3>FIFTH DIMENSION IMPERIAL</h3>
-            <p>Explore the Archive. Step into the realm.</p>
+            <h3>SECURE YOUR UNIFORM</h3>
+            <p>Step into the collection and move through the current archive.</p>
             <span className="visit-link">Visit 5dimperial.com <ArrowRight size={16} /></span>
           </div>
         </a>

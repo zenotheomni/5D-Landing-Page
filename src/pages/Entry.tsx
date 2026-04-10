@@ -61,9 +61,9 @@ const Entry = () => {
       <div className="hero-content">
         <h1>PLEAD THE FIFTH</h1>
         <p>
-          Turn your situation into a FIFTHuation.<br />
+          Join a premium world of music, garments, drops, and elevated identity.<br />
+          Get the signal before the public does.<br />
           This is The Foundation.<br />
-          Music, garments, and evolution.<br />
           <br />
           <span style={{color: 'var(--cosmic-violet)', fontWeight: 'bold'}}>We in the FIFTH 🖐🏽💫</span>
         </p>
@@ -78,8 +78,12 @@ const Entry = () => {
             <span>Unreleased music</span>
           </div>
           <div className="perk-item">
+            <span className="perk-emoji">🎟️</span>
+            <span>Event access</span>
+          </div>
+          <div className="perk-item">
             <span className="perk-emoji">🖐🏽</span>
-            <span>Limited pieces</span>
+            <span>World updates</span>
           </div>
         </div>
 
@@ -113,7 +117,7 @@ const Entry = () => {
 
             <div className="form-group">
               <label htmlFor="phone" style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span>PHONE NUMBER <span style={{ textTransform: 'none', color: 'var(--muted-silver)' }}>(Optional - for VIP physical drops only)</span></span>
+                <span>PHONE NUMBER <span style={{ textTransform: 'none', color: 'var(--muted-silver)' }}>(Optional - for VIP drops and priority alerts)</span></span>
               </label>
               <input
                 type="tel"
@@ -143,11 +147,11 @@ const Entry = () => {
             {error && <p className="error-message" style={{ color: 'var(--subtle-crimson)', fontSize: '0.85rem', marginTop: '0.5rem', marginBottom: '1rem' }}>{error}</p>}
 
             <button type="submit" className="btn-primary" disabled={loading} style={{ marginTop: '0.5rem' }}>
-              {loading ? 'PROCESSING...' : 'ENTER THE FIFTH'} {!loading && <ArrowRight size={20} />}
+              {loading ? 'PROCESSING...' : 'JOIN THE SIGNAL'} {!loading && <ArrowRight size={20} />}
             </button>
 
             <p className="trust-line">
-              You’ll know before they do. No noise.
+              Early access to drops, event signals, music, and world updates. No noise.
             </p>
           </form>
         </div>
