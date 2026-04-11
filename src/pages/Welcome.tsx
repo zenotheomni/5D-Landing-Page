@@ -11,6 +11,7 @@ const interestMap: Record<InterestKey, {
   primaryHref: string;
   primaryLabel: string;
   secondaryHeadline: string;
+  pathTag: string;
 }> = {
   world: {
     intro: 'You are in the system now. Start with the world, then move into the store, the signal, and the culture behind it.',
@@ -19,6 +20,7 @@ const interestMap: Record<InterestKey, {
     primaryHref: 'https://fifth-dimension-universe.vercel.app',
     primaryLabel: 'ENTER THE WORLD',
     secondaryHeadline: 'SECURE YOUR UNIFORM',
+    pathTag: 'world',
   },
   music: {
     intro: 'You came in through the music signal first. Start with the sound, then move deeper into the world around it.',
@@ -27,6 +29,7 @@ const interestMap: Record<InterestKey, {
     primaryHref: 'https://youtube.com/@jenks757?sub_confirmation=1',
     primaryLabel: 'TAP INTO THE MUSIC',
     secondaryHeadline: 'STEP INTO THE COLLECTION',
+    pathTag: 'music',
   },
   merch: {
     intro: 'You came in through the garment signal first. Start with the collection, then move into the world behind it.',
@@ -35,6 +38,7 @@ const interestMap: Record<InterestKey, {
     primaryHref: 'https://5dimperial.com',
     primaryLabel: 'SECURE YOUR UNIFORM',
     secondaryHeadline: 'ENTER THE WORLD',
+    pathTag: 'store',
   },
   mindset: {
     intro: 'You came in through the philosophy first. Start with the mindset, then move into the world it creates.',
@@ -43,6 +47,7 @@ const interestMap: Record<InterestKey, {
     primaryHref: 'https://instagram.com/fifthstateofmind',
     primaryLabel: 'ENTER THE MINDSET',
     secondaryHeadline: 'ENTER THE WORLD',
+    pathTag: 'mindset',
   },
   events: {
     intro: 'You came in through the live signal first. Start with the event path, then move deeper into the wider Fifth universe.',
@@ -51,6 +56,7 @@ const interestMap: Record<InterestKey, {
     primaryHref: 'https://fifth-dimension-universe.vercel.app/events',
     primaryLabel: 'ENTER THE EVENT CORRIDOR',
     secondaryHeadline: 'SECURE YOUR UNIFORM',
+    pathTag: 'events',
   },
 };
 
@@ -61,6 +67,9 @@ const Welcome = () => {
   const routeState = useMemo(() => {
     return interestMap[interest] ?? interestMap.world;
   }, [interest]);
+
+  const primaryHref = `${routeState.primaryHref}${routeState.primaryHref.includes('?') ? '&' : '?'}path=${routeState.pathTag}`;
+  const storeHref = `https://5dimperial.com?path=store&interest=${routeState.pathTag}`;
 
   return (
     <div className="intro-container">
@@ -108,12 +117,12 @@ const Welcome = () => {
         <p style={{ textAlign: 'center', color: 'var(--muted-silver)', marginBottom: '1.25rem' }}>{routeState.nextMoveCopy}</p>
 
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>
-          <a href={routeState.primaryHref} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ width: '100%', maxWidth: '420px', textDecoration: 'none' }}>
+          <a href={primaryHref} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ width: '100%', maxWidth: '420px', textDecoration: 'none' }}>
             {routeState.primaryLabel} <ArrowRight size={20} />
           </a>
         </div>
 
-        <a href="https://5dimperial.com" target="_blank" rel="noopener noreferrer" className="imperial-preview">
+        <a href={storeHref} target="_blank" rel="noopener noreferrer" className="imperial-preview">
           <div className="imperial-marquee">
             <div className="marquee-track">
               <img src="/hoodie.jpeg" alt="5D Imperial Hoodie" className="marquee-img" />
