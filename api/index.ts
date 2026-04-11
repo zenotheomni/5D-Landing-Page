@@ -91,6 +91,7 @@ app.post('/api/join', async (req, res) => {
                         },
                         tags: [
                             'fifth-dimension',
+                            'stage:new',
                             `source:${normalizedSource}`,
                             `interest:${normalizedInterestArea}`,
                             normalizedPhone ? 'sms-candidate' : 'email-only',
