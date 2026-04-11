@@ -7,6 +7,7 @@ const Entry = () => {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [consent, setConsent] = useState(false);
+  const [interestArea, setInterestArea] = useState('world');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ const Entry = () => {
           phone,
           consent,
           source: 'landing-page',
-          interestArea: 'world',
+          interestArea,
         }),
       });
 
@@ -135,6 +136,23 @@ const Entry = () => {
                 onChange={(e) => setPhone(e.target.value)}
                 disabled={loading}
               />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="interestArea">WHAT PULLS YOU IN FIRST?</label>
+              <select
+                id="interestArea"
+                className="input-base"
+                value={interestArea}
+                onChange={(e) => setInterestArea(e.target.value)}
+                disabled={loading}
+              >
+                <option value="world">The world / app</option>
+                <option value="music">Music</option>
+                <option value="merch">Garments / drops</option>
+                <option value="mindset">Mindset / philosophy</option>
+                <option value="events">Events / live rooms</option>
+              </select>
             </div>
 
             <div className="form-group" style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', marginTop: '1.5rem' }}>
