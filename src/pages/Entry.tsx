@@ -51,7 +51,7 @@ const Entry = () => {
         throw new Error(data.error || 'Error joining the movement. Please try again.');
       }
 
-      navigate('/welcome');
+      navigate(`/welcome?interest=${encodeURIComponent(interestArea)}`);
     } catch (err: any) {
       setError(err.message || 'Error joining the movement. Please try again.');
     } finally {
