@@ -33,10 +33,6 @@ app.get('/health', (req, res) => {
 });
 
 app.post('/api/join', async (req, res) => {
-    console.log('API_ROUTE_HIT', '/api/join');
-    console.log('API_REQUEST_BODY', req.body);
-    console.log('API_SUPABASE_URL', supabaseUrl);
-
     const {
         name,
         email,
@@ -75,7 +71,6 @@ app.post('/api/join', async (req, res) => {
                 .insert([payload])
                 .select();
 
-            console.log('Supabase Insert Payload:', payload);
             console.log('INSERT_RESULT:', { data, error });
 
             if (error) {
