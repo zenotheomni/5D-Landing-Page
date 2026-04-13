@@ -113,31 +113,29 @@ app.post('/api/join', async (req, res) => {
         // 2. Add to Mailchimp Audience (If email is provided and Mailchimp configured)
         if (normalizedEmail && process.env.MAILCHIMP_API_KEY && process.env.MAILCHIMP_AUDIENCE_ID) {
             try {
+                const mailchimpPayload = {
+                    email_address: normalizedEmail,
+                    status_if_new: 'subscribed',
+                    status: 'subscribed',
+                    merge_fields: {
+                        FNAME: normalizedName || undefined,
+                        SMSPHONE: normalizedPhone || undefined,
+                    },
+                    tags: [
+                        'fifth-dimension',
+                        'stage:new',
+                        `source:${normalizedSource}`,
+                        `interest:${normalizedInterestArea}`,
+                        normalizedPhone ? 'sms-candidate' : 'email-only',
+                    ],
+                };
+
+                console.log('MAILCHIMP_PAYLOAD:', mailchimpPayload);
+
                 const mailchimpResult = await mailchimp.lists.setListMember(
                     process.env.MAILCHIMP_AUDIENCE_ID,
                     normalizedEmail,
-                    {
-                        email_address: normalizedEmail,
-                        status_if_new: 'subscribed',
-                        status: 'subscribed',
-                        merge_fields: {
-                            FNAME: normalizedName || undefined,
-                            PHONE: normalizedPhone || undefined,
-                        },
-                        tags: [
-                            'fifth-dimension',
-                            'stage:new',
-                            `source:${normalizedSource}`,
-                            `interest:${normalizedInterestArea}`,
-                            normalizedPhone ? 'sms-candidate' : 'email-only',
-                        ],
-                        marketing_permissions: [
-                            {
-                                marketing_permission_id: process.env.MAILCHIMP_EMAIL_PERMISSION_ID,
-                                enabled: true,
-                            },
-                        ].filter(Boolean as unknown as <T>(value: T) => value is T),
-                    }
+                    mailchimpPayload
                 );
                 console.log('MAILCHIMP_RESULT:', mailchimpResult);
             } catch (mcError: any) {
