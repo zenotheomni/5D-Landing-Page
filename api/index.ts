@@ -33,6 +33,10 @@ app.get('/health', (req, res) => {
 });
 
 app.post('/api/join', async (req, res) => {
+    console.log('API_ROUTE_HIT', '/api/join');
+    console.log('API_REQUEST_BODY', req.body);
+    console.log('API_SUPABASE_URL', supabaseUrl);
+
     const {
         name,
         email,
@@ -66,19 +70,50 @@ app.post('/api/join', async (req, res) => {
                 phone: normalizedPhone || null,
             };
 
-            const { error } = await supabase
+            const { data, error } = await supabase
                 .from('waitlist')
-                .insert([payload]);
+                .insert([payload])
+                .select();
+
+            console.log('Supabase Insert Payload:', payload);
+            console.log('INSERT_RESULT:', { data, error });
 
             if (error) {
                 console.error('Supabase Error:', error);
+
+                const duplicateEmail =
+                    typeof error.message === 'string' &&
+                    (error.message.toLowerCase().includes('duplicate key') ||
+                        error.message.toLowerCase().includes('unique constraint'));
+
+                if (duplicateEmail) {
+                    const alreadyOnListResponse = {
+                        success: true,
+                        message: 'You are already on the list.',
+                        meta: {
+                            source: normalizedSource,
+                            interestArea: normalizedInterestArea,
+                            duplicate: true,
+                        },
+                    };
+
+                    console.log('API_RESPONSE_BODY', alreadyOnListResponse);
+                    return res.status(200).json(alreadyOnListResponse);
+                }
+
+                return res.status(500).json({ error: `Supabase insert failed: ${error.message}` });
+            }
+
+            if (!data || data.length === 0) {
+                console.error('Supabase Error: insert returned no rows');
+                return res.status(500).json({ error: 'Supabase insert failed: no row returned.' });
             }
         }
 
         // 2. Add to Mailchimp Audience (If email is provided and Mailchimp configured)
         if (normalizedEmail && process.env.MAILCHIMP_API_KEY && process.env.MAILCHIMP_AUDIENCE_ID) {
             try {
-                await mailchimp.lists.setListMember(
+                const mailchimpResult = await mailchimp.lists.setListMember(
                     process.env.MAILCHIMP_AUDIENCE_ID,
                     normalizedEmail,
                     {
@@ -104,19 +139,26 @@ app.post('/api/join', async (req, res) => {
                         ].filter(Boolean as unknown as <T>(value: T) => value is T),
                     }
                 );
+                console.log('MAILCHIMP_RESULT:', mailchimpResult);
             } catch (mcError: any) {
                 console.error('Mailchimp Error:', mcError.response?.body || mcError);
+                return res.status(500).json({
+                    error: `Mailchimp sync failed: ${mcError.response?.body?.detail || mcError.message || 'unknown error'}`,
+                });
             }
         }
 
-        res.status(200).json({
+        const successResponse = {
             success: true,
             message: 'Successfully joined the movement.',
             meta: {
                 source: normalizedSource,
                 interestArea: normalizedInterestArea,
             },
-        });
+        };
+
+        console.log('API_RESPONSE_BODY', successResponse);
+        res.status(200).json(successResponse);
     } catch (error: any) {
         console.error('Join Error:', error);
         res.status(500).json({ error: error.message || 'Error processing request' });
