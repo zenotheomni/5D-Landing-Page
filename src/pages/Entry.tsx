@@ -2,19 +2,29 @@ import { useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
+const discoverySourceOptions = [
+  { value: 'social_media', label: 'Social media' },
+  { value: 'music_event', label: 'Music / event' },
+  { value: 'friend', label: 'A friend' },
+  { value: 'search', label: 'Search' },
+  { value: 'other', label: 'Other' },
+];
+
 const Entry = () => {
   const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [discoverySource, setDiscoverySource] = useState('social_media');
   const [consent, setConsent] = useState(false);
-  const [interestArea, setInterestArea] = useState('world');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [notice, setNotice] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setNotice('');
 
     if (!email) {
       setError('Please provide an email address.');
@@ -41,7 +51,7 @@ const Entry = () => {
           phone,
           consent,
           source: 'landing-page',
-          interestArea,
+          discoverySource,
         }),
       });
 
@@ -51,9 +61,14 @@ const Entry = () => {
         throw new Error(data.error || 'Error joining the movement. Please try again.');
       }
 
-      navigate(`/welcome?interest=${encodeURIComponent(interestArea)}`);
-    } catch (err: any) {
-      setError(err.message || 'Error joining the movement. Please try again.');
+      if (data.alreadySignedUp) {
+        setNotice('You’re already signed up for Fifth Dimension updates.');
+        return;
+      }
+
+      navigate('/welcome');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Error joining the movement. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -139,19 +154,20 @@ const Entry = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="interestArea">WHAT PULLS YOU IN FIRST?</label>
+              <label htmlFor="discoverySource">HOW DID YOU HEAR ABOUT FIFTH DIMENSION?</label>
               <select
-                id="interestArea"
+                id="discoverySource"
                 className="input-base"
-                value={interestArea}
-                onChange={(e) => setInterestArea(e.target.value)}
+                value={discoverySource}
+                onChange={(e) => setDiscoverySource(e.target.value)}
                 disabled={loading}
+                required
               >
-                <option value="world">The world / app</option>
-                <option value="music">Music</option>
-                <option value="merch">Garments / drops</option>
-                <option value="mindset">Mindset / philosophy</option>
-                <option value="events">Events / live rooms</option>
+                {discoverySourceOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -170,6 +186,7 @@ const Entry = () => {
             </div>
 
             {error && <p className="error-message" style={{ color: 'var(--subtle-crimson)', fontSize: '0.85rem', marginTop: '0.5rem', marginBottom: '1rem' }}>{error}</p>}
+            {notice && <p className="success-message" style={{ color: 'var(--bone-white)', fontSize: '0.9rem', marginTop: '0.5rem', marginBottom: '1rem' }}>{notice}</p>}
 
             <button type="submit" className="btn-primary" disabled={loading} style={{ marginTop: '0.5rem' }}>
               {loading ? 'PROCESSING...' : 'JOIN THE SIGNAL'} {!loading && <ArrowRight size={20} />}
