@@ -25,6 +25,22 @@ const getErrorMessage = (error: unknown) => {
     return error instanceof Error ? error.message : 'Error processing request';
 };
 
+const normalizePhone = (phone: unknown) => {
+    if (typeof phone !== 'string' || !phone) return null;
+
+    const digits = phone.replace(/\D/g, '');
+
+    if (digits.length === 10) {
+        return `+1${digits}`;
+    }
+
+    if (digits.length === 11 && digits.startsWith('1')) {
+        return `+${digits}`;
+    }
+
+    return null;
+};
+
 // Initialize Mailchimp (Optional)
 if (process.env.MAILCHIMP_API_KEY) {
     mailchimp.setConfig({
@@ -49,7 +65,7 @@ app.post('/api/join', async (req, res) => {
 
     const normalizedName = typeof name === 'string' ? name.trim() : '';
     const normalizedEmail = typeof email === 'string' ? email.trim().toLowerCase() : '';
-    const normalizedPhone = typeof phone === 'string' ? phone.trim() : '';
+    const normalizedPhone = normalizePhone(phone);
     const normalizedSource = typeof source === 'string' ? source.trim() : 'landing-page';
     const normalizedDiscoverySource = typeof discoverySource === 'string' ? discoverySource.trim() : '';
     const hasConsent = Boolean(consent);
@@ -73,7 +89,7 @@ app.post('/api/join', async (req, res) => {
             const payload = {
                 name: normalizedName || null,
                 email: normalizedEmail || null,
-                phone: normalizedPhone || null,
+                phone: normalizedPhone,
             };
 
             const { data, error } = await supabaseClient
@@ -125,7 +141,6 @@ app.post('/api/join', async (req, res) => {
                     status: 'subscribed',
                     merge_fields: {
                         FNAME: normalizedName || undefined,
-                        SMSPHONE: normalizedPhone || undefined,
                     },
                     tags: [
                         'fifth-dimension',
