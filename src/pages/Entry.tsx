@@ -106,7 +106,7 @@ const Entry = () => {
           </div>
           <div className="perk-item">
             <span className="perk-emoji">🖐🏽</span>
-            <span>World updates</span>
+            <span>5D universe access</span>
           </div>
         </div>
 
@@ -193,7 +193,7 @@ const Entry = () => {
             </button>
 
             <p className="trust-line">
-              Early access to drops, event signals, music, and world updates. No noise.
+              Early access to drops, event signals, music, and 5D universe access. No noise.
             </p>
           </form>
         </div>
