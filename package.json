@@ -8,6 +8,7 @@
     "backend": "npm run dev --prefix server",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
+    "backup:waitlist": "node scripts/export-supabase-waitlist.mjs",
     "preview": "vite preview",
     "cap:sync": "npx cap sync",
     "cap:open:ios": "npx cap open ios",
